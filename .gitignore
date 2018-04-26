@@ -1,0 +1,11 @@
+bggen.his
+bggen.dat
+bggen.nt
+n_omega.hbk
+N_omega.hbk
+bggen.Linux.x86_64.exe
+bggen
+old/
+obj.Linux.x86_64/
+*.o
+

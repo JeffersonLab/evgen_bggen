@@ -1,0 +1,62 @@
+By Jixie Zhang @20180425
+History of program bggen
+Program bggen is actually from hall-d software package. The original introduction
+of this program is in file README.HallD.
+In 2015 Rakitha Beminiwattha extracted it out for moller and SoLID projects.
+Check README.Rakitha for details about what he changed and how to compile|run it.
+In April 2018, Jixie Zhang made modifications with Rakitha's version and created
+version 1.0.0 and upload it to github. All the modifications are listed below.
+For details changes, please see file 'diff.txt'.
+
+----------------------------------------------------------------------------
+Version 1.0.0
+
+1. Removed code/Makefile since it depends on Hall-D software.
+
+2. Modified code/bg_hddm.c to disable HDDM related stuff.
+
+3. Added Makefile which can compile this program in '-m64' mode.
+
+4. Modified code/CMakeLists.txt to compile in '-m64' mode, the executable is linked
+   against static library.
+   
+5. Added the following variables in input file:  
+   beam current, target length, target density, target material.rad.length,
+   and radiator thickness.
+   From now on beam and target luminocity will be calculated using input parameters.
+   Radiator thickness is used to control whether or not to use coherence bremsstrahlung
+   or normal bremsstrahlung radiation.  If radiator thickness  > 1.0E-6 will 
+   use coherence bremsstrahlung.
+   
+   The following files have been changed:
+   code/bg_ctrl.inc
+   code/bremsbeam_ini.F
+   code/bg_ini.F
+   code/cohbeam_ini.F
+   code/cobrems.F
+
+   These 3 cards were added in fort.15
+C -- radiator thickness in cm, if >1.0E-6, will use coherence brem. photon
+RADTHICK 0.00 
+C -- electron beam current (uA)
+CURRENT  15.0          
+C -- Only Hydrogen target is supported, need more work for other target 
+C -- tg length,density,material.rad.length. In cm, g/cm^3, g/cm^2.
+TARGET  15.0   0.071   63.0470
+
+6. Modified common block variable DCOLL (diameter of the radiator) to be in unit of cm.  
+   Before it is in m, which is not consistant with other parameters in the same common block.
+    
+7. Changed bremsbeam_ini(xxx) and cohbeam_ini(xxx). Removed 'ZCOLLIM,COLDIAM'
+   from argument list since they are inside common block.
+    
+8. Changed cobrems(xxx), add argument radThick.
+    Subroutine cobrems(Emax,Epeak,colDist,colDiam,radThick)
+    
+9. Changed bremsbeam_ini(xxx). Added more comments. disable calling cobrems(xxx)
+   since cobrems(xxx) only does initialization for coherence bremsstrahlung.
+   It does nothing for normal bremsstrahlung radiation.    
+
+10.Updated code/rnd_ini.F. If user given ZERO random seed in card 'RNDMSEQ', will
+   use process ID and system time to form a seed, otherwise use the given see.
+    

@@ -1,0 +1,49 @@
+LIST
+C
+C ===    INPUT file for BGGEN
+C
+TRIG     10000         number of events to simulate
+C                       
+C --  output file formats, HDDM is not supported any more
+C --         HDDM  simple  ntuple
+WROUT    0     1       1   
+
+C -- number of events to print
+NPRIEV   10
+
+C -- energy range of photon in GeV, minimum 0.18
+EPHLIM   0.18 11.0       
+
+C -- random number seed, if RNDMSEQ=0 will use process ID and system time
+C -- to form a seed, otherwise use this given positive integer
+RNDMSEQ  0
+
+C --  electron beam energy (GeV) 
+EELEC    11.0
+
+C -- coherent peak energy (GeV)
+EPEAK    8.0
+
+C -- distance to the collimator in cm (default 7600 cm)
+ZCOLLIM  7600.0
+
+C -- diameter of the collimator in cm (default 0.34 cm)
+DCOLLIM  0.34
+
+C -- radiator thickness in cm, if >1.0E-6, will use coherence brem. photon
+RADTHICK 0.00         
+
+C -- minimal energy (GeV) for PYTHIA model, otherwise use SAID model
+EPYTHMIN 3.0
+    
+C -- specify run number
+RUNNO    2
+
+C -- electron beam current (uA)
+CURRENT  15.0          
+
+C -- Only Hydrogen target is supported, need more work for other target 
+C -- tg length,density,material.rad.length. In cm, g/cm^3, g/cm^2.
+TARGET  15.0   0.071   63.0470
+
+STOP

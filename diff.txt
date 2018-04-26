@@ -1,0 +1,476 @@
+Only in t/code: @
+diff code/bg_ctrl.inc t/code/bg_ctrl.inc
+8,9c8,9
+<       COMMON/PHCTRL/ NEVENT,RUNNO,EPH_LIM(2),EELEC,EPEAK,EPYMIN,ELOWMIN
+<      +              ,ZCOLL,DCOLL,RADTHICK
+---
+>       COMMON/PHCTRL/ NEVENT,RUNNO,EPH_LIM(2),EELEC,EPEAK,ZCOLL,EPYMIN,ELOWMIN
+>      +              ,DCOLL
+18,20c18
+<      +              ,CURRENT
+<      +              ,TGPARA(3)
+<       INTEGER   NEVENT    ! number of events to simulate
+---
+>       INTEGER   NEVENT    ! number of events to simulate (F)
+22c20
+<      +         ,IWROUT    ! (1)>0 - write out the HDDS file (events)
+---
+>      +         ,IWROUT    ! (1)>0 - write out the HDDS file (events) (F)
+28,29c26
+<      +         ,IRND_SEQ  ! the random number seed (each integer number gives a different sequence)
+< C                           Added By Jixie: if =0, will use process id and system time to form this seed
+---
+>      +         ,IRND_SEQ  ! the random number sequence (each integer number gives a different sequence) (F)
+31c28
+<      +         ,IDBEAM    ! histogram ID for the beam (=0 - fixed energy)
+---
+>      +         ,IDBEAM    ! histogram ID for the beam (=0 - fixed energy) (F)
+38,54c35,48
+<       REAL      EPH_LIM   ! limits on the photon beam energy GeV
+<      +         ,EELEC     ! electron beam energy
+<      +         ,EPEAK     ! energy of the coherent peak (the right edge) 
+<      +         ,EPYMIN    ! minimal energy for PYTHIA,
+< C                           below that the low energy generator is used
+< C                           the value may be adjusted to the bin boundary of IDBEA
+<      +         ,ELOWMIN   ! minimal energy for the low energy generator 
+<      +         ,ZCOLL     ! distance to the collimator (cm)
+<      +         ,DCOLL     ! collimator diameter (cm), Jixie changed it from m to cm to be consistant
+<      +         ,RADTHICK  ! Added By Jixie: radiator thichness in cm 
+<      +         ,RATESEC   ! reference interation rate (Hz), calculated
+<      +         ,VERTEX    ! Vertex set in HDDM output file (cm), 0,0,0 is the default 
+< C                           CURRENT and array TGPARA(3) added by Jixie @ 20180417
+<      +         ,CURRENT   ! electron beam current in uA   
+<      +         ,TGPARA    ! (1) target length in cm
+< C                           (2) target density in g/cm^3
+< C                           (3) target material rad. length in g/cm^2, not true thickness
+---
+>       REAL      EPH_LIM ! limits on the photon beam energy GeV (F)
+>      +         ,EELEC   ! electron beam energy (F)
+>      +         ,EPEAK   ! energy of the coherent peak (the right edge) (F) 
+>      +         ,DCOLL   ! collimator diameter (m) (F)
+>      +         ,ZCOLL   ! distance to the collimator (cm) (F)
+>      +         ,EPYMIN  ! minimal energy for PYTHIA, (F)
+> C                         below that the low energy generator is used
+> C                         the value may be adjusted to the bin boundary of IDBEA
+>      +         ,ELOWMIN ! minimal energy for the low energy generator (F) 
+>      +         ,RATESEC ! reference interation rate (Hz), calculated
+>      +         ,VERTEX  ! Vertex set in HDDM output file (cm)  n.b. 0,0,0 is the default which means hdgeant will use its default, 0,0,65
+> C
+> 
+> 
+diff code/bg_hddm.c t/code/bg_hddm.c
+2,3d1
+< #include <string.h>
+< #include <stdlib.h>
+5,14c3
+< //By Jixie @ 20180411:  In order to compile this file, HDDM
+< //package should be installed.  However, there is no independ HDDM
+< //package exist any more. One has to install the whole Hall-D software 
+< //package. Therefore I decide to disable HDDM completely 
+< //comment out the next line will completely unhook HDDM
+< //#define Use_HDDM 1
+< 
+< #ifndef Use_HDDM
+< typedef FILE s_iostream_t;
+< #endif
+---
+> #include "HDDM/hddm_s.h"
+46,47c35
+<    // Open output file 
+< #ifdef Use_HDDM
+---
+>    /* Open output file */
+52,57d39
+< 	}
+< #else
+<    hddmOutputStream = fopen(outfile,"w");
+<    if (! hddmOutputStream) {
+<       fprintf(stderr, "Unable to open output file \"%s\" for writing.\n", outfile);
+<       exit(-3);
+59c41
+< #endif
+---
+>    
+68c50,51
+<    // Close output file 
+---
+>    /* Close output file */
+>    close_s_HDDM(hddmOutputStream);
+70,74d52
+< #ifdef Use_HDDM
+<    close_s_HDDM(hddmOutputStream);   
+< #else
+<    fclose(hddmOutputStream);
+< #endif
+83c61
+<                        int *ntra, keve_t *keve, peve_t *peve)
+---
+>             int *ntra, keve_t *keve, peve_t *peve)
+85c63
+<    // Loop over events 
+---
+>    /* Loop over events */
+92d69
+<    // Start a new event 
+94,96c71,72
+<    
+< #ifdef Use_HDDM
+<    
+---
+> 
+>    /* Start a new event */
+136c112
+<         prop->mass = 0.938272; // this should be derived from type ... 
+---
+>         prop->mass = 0.938272; /* this should be derived from type ... */
+152a129
+>       /* double E2;  unused so commented out 12/18/2013 DL */
+168,169c145
+<    } 
+<    
+---
+>    }
+181,192c157
+<    }  
+<    
+< #else
+< 
+<    if ( *ntra > 0) {
+< 	  Nevents_written++;
+<       printf("Wrote event %d events (%d generated)\n",
+<               Nevents_written, Nevents);
+<    }
+< 
+< #endif
+<   
+---
+>    }   
+diff code/bg_ini.F t/code/bg_ini.F
+28c28
+<       IWROUT(1)=0
+---
+>       IWROUT(1)=1
+30c30
+<       IWROUT(3)=1
+---
+>       IWROUT(3)=0
+33c33
+<       EPH_LIM(1)=0.18
+---
+>       EPH_LIM(1)=0.15
+35,55c35,44
+<       EELEC=11.0        ! electron energy
+<       EPEAK=8.          ! peak right edge
+<       ZCOLL=7600.       ! distance of radiator to collimator in cm
+<       DCOLL=0.34        ! diameter of collimator in cm 
+<       RADTHICK=0.0020   ! radiator thickness in cm (default is 20 um)
+<       EPYMIN=3.         ! min energy for PYTHIA
+<       ELOWMIN=0.15      ! minimal energy for the low energy generator 
+< C
+<       LUNWR(1)=0        ! HDDS file - LUN not used
+<       LUNWR(2)=2        ! sequential file
+<       LUNWR(3)=3        ! NTUPLE file
+< C
+<       VERTEX(1)=0.0     ! vertex x in cm
+<       VERTEX(2)=0.0     ! vertex y in cm
+<       VERTEX(3)=0.0     ! vertex z in cm
+< C
+<       CURRENT=15.0      ! beam current 15 uA
+< C     target parameter, added by Jixie @20180417, LH2 by default
+<       TGPARA(1)=15.0    ! target length cm
+<       TGPARA(2)=0.071   ! target density g/cm^3
+<       TGPARA(3)=63.047  ! target material rad. length in g/cm^2
+---
+>       EELEC=11  ! electron energy
+>       EPEAK=8.   ! peak right edge
+>       ZCOLL=7600.
+>       DCOLL=0.0034
+>       EPYMIN=3.  ! min energy for PYTHIA
+>       ELOWMIN=0.15
+> C
+>       LUNWR(1)=0   ! HDDS file - LUN not used
+>       LUNWR(2)=2   ! sequential file
+>       LUNWR(3)=3   ! NTUPLE file
+62c51
+<       CALL FFSET('SIZE',32)
+---
+>       CALL FFSET('SIZE',16)
+74,75c63
+<       CALL FFKEY('DCOLLIM'   , DCOLL      , 1,'REAL')     
+<       CALL FFKEY('RADTHICK'  , RADTHICK   , 1,'REAL')    
+---
+>       CALL FFKEY('DCOLLIM'   , DCOLL      , 1,'REAL')      
+78,80c66
+<       CALL FFKEY('VERTEX'    , VERTEX(1)  , 3,'REAL')
+<       CALL FFKEY('CURRENT'   , CURRENT    , 1,'REAL')
+<       CALL FFKEY('TARGET'    , TGPARA(1)  , 3,'REAL')
+---
+>       CALL FFKEY('VERTEX'    , VERTEX(1) , 3,'REAL')
+208c194
+< C---  Photon Beam spectrum
+---
+> C---    Beam spectrum
+212,219c198,199
+< !  use 1.0E-6 other than zero to avoid round off effect of fortran memory
+<       IF(RADTHICK.GT.1.0E-6) THEN
+< !  use coherant brems from diamond, in GeV or cm units
+<          CALL COHBEAM_INI(IDBEAM,EELEC,EPEAK,EPH_LIM)
+<       ELSE
+< !  use normal brem. radiation photon spectrum on proton target, in GeV or cm units
+<          CALL BREMSBEAM_INI(IDBEAM,EELEC,EPEAK,EPH_LIM)
+<       ENDIF
+---
+> C      CALL COHBEAM_INI(IDBEAM,EELEC,EPEAK,EPH_LIM,ZCOLL,DCOLL) !coherant brems from diamond
+>       CALL BREMSBEAM_INI(IDBEAM,EELEC,EPEAK,EPH_LIM,ZCOLL,DCOLL) !photon spectrum on proton target
+diff code/bremsbeam_ini.F t/code/bremsbeam_ini.F
+2c2
+<       SUBROUTINE BREMSBEAM_INI(ID,E0,EP,ELIM)
+---
+>       SUBROUTINE BREMSBEAM_INI(ID,E0,EP,ELIM,ZCOLLIM,COLDIAM)
+4c4
+< C---   Photoproduction by the normal Brem. beam
+---
+> C---   Photoproduction by the coherent Brem. beam
+6,9c6,11
+< C           where dN/dE - Brem. Photon, sigma(E) - total photoprod. on protons 
+< C      E0 - e- energy in GeV
+< C      EP - coherent peak energy in GeV
+< C      ELIM - energy limits in GeV
+---
+> C              where dN/dE - coh. Brem., sigma(E) - total photoprod. on protons 
+> C      E0 - e- energy
+> C      EP - coherent peak energy
+> C      ELIM - energy limits
+> C      ZCOLLIM - distance to the collimator
+> C      COLDIAM - collimator diameter
+13c15
+<       REAL E0,EP,ELIM(2)
+---
+>       REAL E0,EP,ELIM(2),ZCOLLIM,COLDIAM
+17c19
+<       REAL GPXSECT
+---
+>       REAL DNIDX,DNCDX,GPXSECT
+21d22
+<       REAL density
+35a37,41
+> C     X_0 = 63.0470;//g/cm**2 unit rad. length for H from Tsai RevModPhys.46.815
+> C     LH2 target density is 0.071*40 g/cm2 where H density is 0.071 g/cm3 tgt lenght is 40 cm
+>       X_0 = 63.0470
+>       rad_len=0.071*15/X_0
+> 
+43,57c49
+< C
+< C---calculate TRUE rad length and luminosity
+< C
+< C     X_0 = 63.0470;//g/cm**2 unit rad. length for H from Tsai RevModPhys.46.815
+< C     LH2 target rad.length is 0.071*40 g/cm2 where H density is 0.071 g/cm3 and lenght is 40 cm
+< C     by Jixie @ 20180417: use values from input file fort.15
+< 
+<       targth=TGPARA(1)         ! target thickness for PVDIS and SIDIS 40 cm for JPsi 15 cm for MOLLER 150 cm
+<       density=TGPARA(2)        ! target density in g/cm^3 
+<       X_0=TGPARA(3)            ! target material rad. length in g/cm^2
+<       ecurr=CURRENT*1.0E-6     ! turn beam current from uA to A: PVDIS (50 uA), JPsi (3 uA), SIDIS (15 uA) and MOLLER (85 uA)
+< C true thickness in unit of rad length
+<       rad_len=density*targth/X_0
+< C luminosity L= I/C * thickness*density*N_A/A and N_A/A = 0.6022 units are in inverse barns 
+<       xlum=ecurr/1.6E-19*targth*density*0.6022/A ! luminosity factor (in [1/b] units) 
+---
+> C end of EPA and BREMS parameters
+60,61c52,53
+< C end of rad length and luminosity
+< 
+---
+>       ibrem=1
+>       IF(ELIM(2).LT.ELIM(1)*1.006) ibrem=0
+65,66c57,60
+<       ibrem=1
+<       IF(ELIM(2).LT.ELIM(1)*1.006) ibrem=0
+---
+>       targth=15.                ! target thickness for PVDIS and SIDIS 40 cm for JPsi 15 cm for MOLLER 150 cm
+>       ecurr=15.0E-6             ! beam current is for PVDIS 50 uA and for JPsi 3 uA for SIDIS 15 uA (for 3He) for MOLLER 85 uA
+> C luminosity L= I/C * thickness*density*N_A/A and N_A/A = 0.6022 units are in inverse barns 
+>       xlum=ecurr/1.6E-19*targth*0.071*0.6022 ! luminosity factor for LH2:  2.25uA on 20um (1.7e-4 RL) crystal, 30 cm LH2 (in [1/b] units) 
+68,73c62,64
+< ! -- Jixie: COBREMS() will initilize the diamond parameters and ratation matrix, we do not need it
+< !           but it will not do anything bad here
+< !      IF(ibrem.NE.0) THEN
+< ! --   subroutine COBREMS() needs all inputs in GeV or m
+< !         CALL COBREMS(E0,EP,ZCOLL/100.,DCOLL/100.,RADTHICK/100.) 
+< !      ENDIF
+---
+>       IF(ibrem.NE.0) THEN
+>          CALL COBREMS(E0,EP,ZCOLLIM/100.,COLDIAM) ! collimator distance in m
+>       ENDIF
+94,95c85,86
+<          omega = X*E0               ! photon energy
+<          e1 = E0 - omega            ! electron energy after radiation
+---
+>          omega = X*E0
+>          e1 = E0 - omega
+99,100c90
+< C ---- start (Equivalent Photon Approximation(EPA) calculation
+< C --  Jixie: details in V.M. Budnev et. al. Physics Reports 15, no.4 (1975) 181-282
+---
+> C ---- start EPA calculation
+102c92
+<          q2min = ame**2*omega**2/E0/e1 !Eq. 6.11, V.M. Budnev et. al. 
+---
+>          q2min = ame**2*omega**2/E0/e1 !Eq, 6.11 Budnev et. al.
+109,110c99,100
+<          res=alpha/pi*(t1-t2-t3)*de/e   !Eq. 6.17, V.M. Budnev et. al.,
+<  100     N_omega_EPA=res*e/de           !remove de/e, because N_omega_BREM also not include this 
+---
+>          res=alpha/pi*(t1-t2-t3)/omega*E0  
+>  100     N_omega_EPA=res*omega/E0           ! res
+112,118c102,103
+< C
+< C ---- start BREMS calculation
+< ! --  Jixie: pdg booklet 2016 version,  Eq.33.30, but missing A/X0/N_A and de/e
+< !     Without coefficent 'A/X0/N_A' it is "units of photons per radiation length"
+< !     http://pdg.lbl.gov/2016/reviews/rpp2016-rev-passage-particles-matter.pdf
+< !     use rad_len/2 here since effectively on one half of the whole target will see brem. photon
+<          N_omega_BREM = rad_len/2*(4.0/3.0 - 4.0*X/3.0 + X**2)
+---
+> C ---- start BREMS calculation            
+>          N_omega_BREM = rad_len*(4.0/3.0 - 4.0*X/3.0 + X**2)/2
+120d104
+< C
+diff code/CMakeLists.txt t/code/CMakeLists.txt
+37d36
+< message ("CERNLIB := " ${CERNLIB})
+49c48
+< set_target_properties(bggen_object PROPERTIES COMPILE_FLAGS "-m64" LINK_FLAGS "-m64")
+---
+> set_target_properties(bggen_object PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+54c53
+< set_target_properties(bggen_static PROPERTIES COMPILE_FLAGS "-m64" LINK_FLAGS "-m64")
+---
+> set_target_properties(bggen_static PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+58,61c57,60
+< #add_library(bggen_shared SHARED $<TARGET_OBJECTS:bggen_object>)
+< #set_target_properties(bggen_shared PROPERTIES OUTPUT_NAME libbggen)
+< #set_target_properties(bggen_shared PROPERTIES COMPILE_FLAGS "-m64" LINK_FLAGS "-m64")
+< #target_link_libraries(bggen_shared ${CERNLIB})
+---
+> add_library(bggen_shared SHARED $<TARGET_OBJECTS:bggen_object>)
+> set_target_properties(bggen_shared PROPERTIES OUTPUT_NAME libbggen)
+> set_target_properties(bggen_shared PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+> target_link_libraries(bggen_shared ${CERNLIB})
+65,66c64,65
+< target_link_libraries(bggen bggen_static ${CERNLIB})
+< set_target_properties(bggen PROPERTIES COMPILE_FLAGS "-m64" LINK_FLAGS "-m64")
+---
+> target_link_libraries(bggen bggen_shared ${CERNLIB})
+> set_target_properties(bggen PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
+diff code/cobrems.F t/code/cobrems.F
+12,14c12,14
+< !  input all in GeV or m
+<       Subroutine cobrems(Emax,Epeak,colDist,colDiam,radThick)
+<       real Emax,Epeak,colDist,colDiam,radThick
+---
+> 
+>       Subroutine cobrems(Emax,Epeak,Dist,colDiam)
+>       real Emax,Epeak,Dist,colDiam
+16c16
+< C      
+---
+>       REAL inputs(10)
+33,34c33,34
+<       D=colDist		!distance from radiator to collimator (m)
+<       t=radThick 	!thickness of radiator (m), default is 20 um
+---
+>       D=Dist		!distance from radiator to collimator
+>       t=20.0e-6		!thickness of radiator (m)
+diff code/cobrems.inc t/code/cobrems.inc
+3d2
+<       double precision dpi
+4a4
+>       double precision dpi
+diff code/cohbeam_ini.F t/code/cohbeam_ini.F
+2c2
+<       SUBROUTINE COHBEAM_INI(ID,E0,EP,ELIM)
+---
+>       SUBROUTINE COHBEAM_INI(ID,E0,EP,ELIM,ZCOLLIM,COLDIAM)
+7,9c7,11
+< C      E0 - e- energy in GeV
+< C      EP - coherent peak energy  in GeV
+< C      ELIM - energy limits  in GeV
+---
+> C      E0 - e- energy
+> C      EP - coherent peak energy
+> C      ELIM - energy limits
+> C      ZCOLLIM - distance to the collimator
+> C      COLDIAM - collimator diameter
+13c15
+<       REAL E0,EP,ELIM(2)
+---
+>       REAL E0,EP,ELIM(2),ZCOLLIM,COLDIAM
+21,40d22
+<       REAL density
+<       REAL A,X_0
+< C      
+<       A = 1.0 !atomic weight
+< C
+< C
+< C---calculate TRUE rad length and luminosity
+< C
+< C     X_0 = 63.0470;//g/cm**2 unit rad. length for H from Tsai RevModPhys.46.815
+< C     LH2 target rad.length is 0.071*40 g/cm2 where H density is 0.071 g/cm3 and lenght is 40 cm
+< C     by Jixie @ 20180417: use values from input file fort.15
+< 
+<       targth=TGPARA(1)         ! target thickness in cm (30)
+<       density=TGPARA(2)        ! target density in g/cm^3  (0.071)
+<       X_0=TGPARA(3)            ! target material rad. length in g/cm^2 (63.0470)
+<       ecurr=CURRENT*1.0E-6     ! turn beam current from uA to A (2.25uA)
+< C
+< C luminosity L= I/C * thickness*density*N_A/A and N_A/A = 0.6022 units are in inverse barns 
+<       xlum=ecurr/1.6E-19*targth*density*0.6022/A ! luminosity factor for LH2 target: (in [1/b] units) 
+< 
+42,43c24,25
+< C end of rad length and luminosity
+< 
+---
+>       ibrem=1
+>       IF(ELIM(2).LT.ELIM(1)*1.006) ibrem=0
+47,49c29,31
+<  
+<       ibrem=1
+<       IF(ELIM(2).LT.ELIM(1)*1.006) ibrem=0
+---
+>       targth=30.                ! target thickness
+>       ecurr=2.25E-6             ! beam current on a 20um crystal - the "high luminosity" setting
+>       xlum=ecurr/1.6E-19*targth*0.071*0.602 ! luminosity factor:  2.25uA on 20um (1.7e-4 RL) crystal, 30 cm LH2 (1/b) 
+52,53c34
+< C --  subroutine COBREMS() needs all inputs in GeV or m
+<          CALL COBREMS(E0,EP,ZCOLL/100.,DCOLL/100.,RADTHICK/100.) 
+---
+>          CALL COBREMS(E0,EP,ZCOLLIM/100.,COLDIAM) ! collimator distance in m
+Common subdirectories: code/include and t/code/include
+Only in t/code: Makefile
+diff code/rnd_ini.F t/code/rnd_ini.F
+7,28d6
+< !  Jixie: If given seed is zero, create a seed using PID and system time
+<       integer*4 num,idum,pid,GetPId   
+<       integer*8 unixtime
+<       character*30  cdate
+< 
+<       if(ISEQ.EQ.0) THEN
+<          unixtime = time8()
+<          call ctime(unixtime,cdate)  
+< 
+<          pid=GetPId() 
+<          num=10*pid
+<          idum=int(float(num)*abs(
+<      &        float(unixtime-123736761)/float(unixtime+123736761)
+<      &       -float(num-697899)/float(num+697899)
+<      &       +float(pid-3835)/float(pid+3835)))
+< 
+<          ISEQ=idum
+<          write(6,*) 'pid, unixtime, seed=',pid,unixtime,idum
+<          write(6,*) 'Create seed(',idum,') from PID and start time: '
+<      +   ,cdate
+<       ENDIF
+<       
+35a14
+> 
