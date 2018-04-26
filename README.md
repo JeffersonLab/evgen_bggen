@@ -1,7 +1,8 @@
 # bggeb
+
 bggen is the Hall D photoproduction code that Rakitha Beminiwattha <rakithab@jlab.org> imported for 
-SoLID background simulations. The modifications are made to allow electroproduction event generation 
-with this code. For now bggen can only produce events for proton target only.
+SoLID background simulations. The modifications were made to allow electroproduction event generation 
+with this code. For now bggen can only produce events for proton target.
 
 Jixie Zhang (jixie@jlab.org) changed it to be compiled and run in 64-bit mode. Jixie also made
 some improvments as below.
@@ -12,6 +13,8 @@ some improvments as below.
 4) add radiator thickness into input file
 5) enable coherence brem. only if ratiator thickness> 1.0E-6
 6) clean up code, add more comment and make it looks cinsistant.
+
+Check HISTORY.txt for details.
 
 ==============================================================
 # To compile this program:
