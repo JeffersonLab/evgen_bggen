@@ -14,25 +14,30 @@ some improvments as below.
 6) clean up code, add more comment and make it looks cinsistant.
 
 ==============================================================
+# To compile this program:
 
-# To compile use Makefile:
+Note that CERN & ROOT must be installed before compilation.
+
+## To compile use Makefile:
 
     make;
+    bggen.Linux_x86_64.exe will be created.
 
-# To compile use CMake:
+## To compile use CMake:
 
     mkdir build && cd build
     cmake ../code
     make
-
-Note that CERN & ROOT must be installed before compilation.
-
+    bggen will be created.
+    
 ==============================================================
 
-# To Running the code:
-All input files have been placed in run dir. 
+# To run this program:
+
+All input files have been placed in run dir.
+
     cd run;
-    ./bggen
+    ../bggen.Linux_x86_64.exe 
 
 ==============================================================
 
@@ -41,6 +46,10 @@ All input files have been placed in run dir.
     h2root bggen.nt bggen.root
     h2root bggen.hit bggen.his.root
 
+    I happened to find that 'h2root' from root v5.28 or v6.10 and up can
+    convert the hbook file into root file in the above. root v5.30 - v5.34
+    can not.
+     
     Use scripts/HallD_LH_xs.cc and scripts/HallD_gen_lund.cc to
     generate LUND files and kinematics plots.
 
