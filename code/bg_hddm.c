@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 //By Jixie @ 20180411:  In order to compile this file, HDDM
-//package should be installed.  However, there is no independ HDDM
+//package should be installed.  However, there is no independent HDDM
 //package exist any more. One has to install the whole Hall-D software 
 //package. Therefore I decide to disable HDDM completely 
 //comment out the next line will completely unhook HDDM

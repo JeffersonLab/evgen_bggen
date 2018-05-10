@@ -53,8 +53,9 @@ C     by Jixie @ 20180417: use values from input file fort.15
       ecurr=CURRENT*1.0E-6     ! turn beam current from uA to A: PVDIS (50 uA), JPsi (3 uA), SIDIS (15 uA) and MOLLER (85 uA)
 C true thickness in unit of rad length
       rad_len=density*targth/X_0
-C luminosity L= I/C * thickness*density*N_A/A and N_A/A = 0.6022 units are in inverse barns 
-      xlum=ecurr/1.6E-19*targth*density*0.6022/A ! luminosity factor (in [1/b] units) 
+C luminosity L= I/C * thickness*density/A *(p#+n#) *N_A, units are in inverse barns
+C (p#+n#) is proton number + neutron number, it cancels with 1/A.  
+      xlum=ecurr/1.6E-19*targth*density*0.6022 ! luminosity factor of neucleon (in [1/b] units) 
 
 C
 C end of rad length and luminosity

@@ -11,8 +11,8 @@ some improvments as below.
 2) self create random seed if given seed is zero
 3) add beam current and target parameters into input file
 4) add radiator thickness into input file
-5) enable coherence brem. only if ratiator thickness> 1.0E-6
-6) clean up code, add more comment and make it looks cinsistant.
+5) enable coherence brem. only if ratiator thickness > 1.0E-6
+6) clean up code, add more comment and make it look consistant.
 
 Check HISTORY.txt for details.
 
