@@ -115,8 +115,9 @@ C ---- start BREMS calculation
 ! --  Jixie: pdg booklet 2016 version,  Eq.33.30, but missing A/X0/N_A and de/e
 !     Without coefficent 'A/X0/N_A' it is "units of photons per radiation length"
 !     http://pdg.lbl.gov/2016/reviews/rpp2016-rev-passage-particles-matter.pdf
-!     use rad_len/2 here since effectively on one half of the whole target will see brem. photon
-         N_omega_BREM = rad_len/2*(4.0/3.0 - 4.0*X/3.0 + X**2)
+!     Use rad_len/2 here since effectively one half of the whole target will see brem. photon.
+! --  Jixie: 20180722, added window thickness here to produce more Brem. photon
+         N_omega_BREM = (WINTHICK+rad_len/2)*(4.0/3.0 - 4.0*X/3.0 + X**2)
 C ---- end BREMS calculation
 C
          xstot=GPXSECT(e)*1.E-3 ! x-sec in b

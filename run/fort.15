@@ -46,4 +46,8 @@ C -- Only Hydrogen target is supported, need more work for other target
 C -- tg length,density,material.rad.length. In cm, g/cm^3, g/cm^2.
 TARGET  15.0   0.071   63.0470
 
+C -- Jixie: Add upstream window to study the contribution of brem. photons
+C -- coming from this window. In unit of rad. length. Put it to 0 if no window exist.
+C -- scattering on this window will not be calculated
+WINTHICK  0.00
 STOP

@@ -17,6 +17,7 @@ C
      +              ,VERTEX(3)
      +              ,CURRENT
      +              ,TGPARA(3)
+     +              ,WINTHICK
       INTEGER   NEVENT    ! number of events to simulate
      +         ,RUNNO     ! run number to use
      +         ,IWROUT    ! (1)>0 - write out the HDDS file (events)
@@ -52,3 +53,5 @@ C                           CURRENT and array TGPARA(3) added by Jixie @ 2018041
      +         ,TGPARA    ! (1) target length in cm
 C                           (2) target density in g/cm^3
 C                           (3) target material rad. length in g/cm^2, not true thickness
+     +         ,WINTHICK  ! target upstream window thickness in unit of rad. length
+     

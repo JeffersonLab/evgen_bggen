@@ -53,6 +53,7 @@ C     target parameter, added by Jixie @20180417, LH2 by default
       TGPARA(1)=15.0    ! target length cm
       TGPARA(2)=0.071   ! target density g/cm^3
       TGPARA(3)=63.047  ! target material rad. length in g/cm^2
+      WINTHICK=0.000    ! target upstream window thickness in unit of rad. length
 C
 C---    Redefine FFREAD settings
 C
@@ -77,7 +78,8 @@ C
       CALL FFKEY('ELOWMIN'   , ELOWMIN    , 1,'REAL')
       CALL FFKEY('VERTEX'    , VERTEX(1)  , 3,'REAL')
       CALL FFKEY('CURRENT'   , CURRENT    , 1,'REAL')
-      CALL FFKEY('TARGET'    , TGPARA(1)  , 3,'REAL')
+      CALL FFKEY('TARGET'    , TGPARA(1)  , 3,'REAL')   
+      CALL FFKEY('WINTHICK'  , WINTHICK   , 1,'REAL')   
 C
       CALL FFGO
 C

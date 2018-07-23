@@ -35,6 +35,7 @@ endif (Fortran_COMPILER_NAME MATCHES "gfortran.*")
 # cernlib
 execute_process(COMMAND cernlib -dy packlib mathlib OUTPUT_VARIABLE CERNLIB)
 message ("CERNLIB := " ${CERNLIB})
+message ("CERNLIB must be defined ......")
 string(STRIP ${CERNLIB} CERNLIB)
 
 # include directory
