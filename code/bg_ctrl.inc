@@ -8,7 +8,7 @@ C
       COMMON/PHCTRL/ NEVENT,RUNNO,EPH_LIM(2),EELEC,EPEAK,EPYMIN,ELOWMIN
      +              ,ZCOLL,DCOLL,RADTHICK
      +              ,IWROUT(3),LUNWR(3),IRND_SEQ,NPRIEV
-     +              ,IDBEAM,NHBEA
+     +              ,IDBEAM,NHBEA,NHZ
      +              ,IFPYTH
      +              ,IDLOWEN
      +              ,IPLUND(MXPGEANT),IDECLUND(MXPGEANT)
@@ -30,7 +30,8 @@ C                           (3) LUN for the ntuple file
 C                           Added By Jixie: if =0, will use process id and system time to form this seed
      +         ,NPRIEV    ! number of events to print
      +         ,IDBEAM    ! histogram ID for the beam (=0 - fixed energy)
-     +         ,NHBEA     ! number of bins in IDBEAM
+     +         ,NHBEA     ! number of E bins in IDBEAM
+     +         ,NHZ       ! number of Z bins in IDBEAM
      +         ,IFPYTH    ! PYTHIA is used
      +         ,IDLOWEN   ! <>0 - starting ID of histograms for the low energy generator
       INTEGER   IPLUND    ! PYTHIA particle codes (KF) 

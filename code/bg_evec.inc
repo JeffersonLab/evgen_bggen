@@ -7,6 +7,7 @@ C
      +                 ,ITPIN(2,2),AMIN(2),PIN(3,2)
      +                 ,NTRA 
      +                 ,ITPTRA(6,MXTRA),AMTRA(MXTRA),PTRA(3,MXTRA),KETRA(2),XSTRA(3)
+     +                 ,VZ 
       INTEGER IEVENT   ! event number
      +       ,INDUM    !  dummies (for later use)
      +       ,IEVPROC  ! the process number (=0 - PYTHIA)
@@ -18,7 +19,8 @@ C
      +       ,PIN      ! (1-3,k) - 3-momenta, k=1 - beam, k=2 - target
      +       ,AMTRA    ! secondary particles' masses
      +       ,PTRA     ! 3-momenta
-     +       ,XSTRA    !  ebeam,xstot,xssum
+     +       ,XSTRA    ! ebeam,xstot,xssum
+     +       ,VZ        ! vertex z
 
 C
 

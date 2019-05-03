@@ -78,8 +78,8 @@ C
       CALL FFKEY('ELOWMIN'   , ELOWMIN    , 1,'REAL')
       CALL FFKEY('VERTEX'    , VERTEX(1)  , 3,'REAL')
       CALL FFKEY('CURRENT'   , CURRENT    , 1,'REAL')
-      CALL FFKEY('TARGET'    , TGPARA(1)  , 3,'REAL')   
-      CALL FFKEY('WINTHICK'  , WINTHICK   , 1,'REAL')   
+      CALL FFKEY('TARGET'    , TGPARA(1)  , 3,'REAL')
+      CALL FFKEY('WINTHICK'  , WINTHICK   , 1,'REAL')
 C
       CALL FFGO
 C
@@ -211,13 +211,14 @@ C---  Photon Beam spectrum
 C
       IDBEAM=9000
       NHBEA=0
+      NHZ=0
 !  use 1.0E-6 other than zero to avoid round off effect of fortran memory
       IF(RADTHICK.GT.1.0E-6) THEN
 !  use coherant brems from diamond, in GeV or cm units
          CALL COHBEAM_INI(IDBEAM,EELEC,EPEAK,EPH_LIM)
       ELSE
 !  use normal brem. radiation photon spectrum on proton target, in GeV or cm units
-         CALL BREMSBEAM_INI(IDBEAM,EELEC,EPEAK,EPH_LIM)
+         CALL BREMSBEAM_INI(IDBEAM,EELEC,EPH_LIM)
       ENDIF
 C
 C---   Pythia

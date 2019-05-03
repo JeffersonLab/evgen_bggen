@@ -9,6 +9,19 @@ version 1.0.0 and uploaded it to github. All the modifications are listed below.
 For detail changes, please see file 'diff.txt'.
 
 ----------------------------------------------------------------------------
+Version 1.1.0  20190502
+1. Add Z dependence. For each Z bin, the window plus the target matetial in front of
+   this Z bin will be used to create bremsstrahlung photon, while EPA is unchanged. 
+   Therefore the downstream Z will see more bremsstrahlung photon than upstream.
+   The Z bin width is determined as 0.5 cm or 0.1% radiation length, which is smaller.
+   
+A) bremsbeam_ini.F: modify 1D histo h1Egamma to h2EgammaZ, add Z loop
+B) bg_eve.F: use 2-D histo 'h2EgammaZ' to throw z and Egamma
+C) bg_ctrl.inc: Add variable 'NHZ',  which means number of Z bins in 'h2EgammaZ'
+D) lowen_eve.F: Use histogram ID=9010 to determine bin index, before it is 9000
+E) bg_ntup_ini.F and bg_evec.inc: Add variable vz into the commom block and ntuple output. 
+
+----------------------------------------------------------------------------
 Version 1.0.0
 
 1. Removed code/Makefile since it depends on Hall-D software.

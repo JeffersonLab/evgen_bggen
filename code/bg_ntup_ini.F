@@ -38,6 +38,7 @@ C      IQUEST(10)=128000
       CALL HBNAME(idnt,'bgki',ITPTRA(1,1) ,'ityp(6,np)')
       CALL HBNAME(idnt,'bgki',AMTRA(1) ,'am(np)')
       CALL HBNAME(idnt,'bgki',PTRA(1,1),'pout(3,np)')
+      CALL HBNAME(idnt,'bgki',VZ,'vz')
 C
       IERR=0
  999  RETURN

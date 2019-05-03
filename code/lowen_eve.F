@@ -55,7 +55,7 @@ C---    Beam energy
 C
       ebeam=PIN(3,1) 
 
-      CALL HXI(IDBEAM,ebeam,ibin)  ! get ibin  - the bin number for this energy
+      CALL HXI(IDBEAM+10,ebeam,ibin)  ! get ibin  - the bin number for this energy
 C
       NTRA=0
 C

@@ -14,8 +14,8 @@ C
       REAL HRNDM1
       LOGICAL HEXIST
 C
-      INTEGER i,j,ip,ierr,lout,idnt
-      REAL ebeam
+      INTEGER i,j,ierr,lout,idnt
+      REAL z,ebeam
       CHARACTER cent(2)*6,cproc*16
 C
       REAL ptmp1(4,2),ptmp2(4,MXTRA)   ! auxill. arrays to simplify the HDDM mapping
@@ -34,7 +34,11 @@ C---    Beam energy
 C
       IF(IDBEAM.EQ.0.OR..NOT.HEXIST(IDBEAM)) GO TO 999
 C
-      ebeam=HRNDM1(IDBEAM)   ! Get the random photon energy
+      if(RADTHICK.GT.1.0E-6) THEN
+        ebeam=HRNDM1(IDBEAM)   ! Get the random photon energy, for hall-d case, 1-D histo
+      ELSE
+        CALL HRNDM2(IDBEAM,z,ebeam) ! Get the random z and photon energy, 2-D histo
+      ENDIF
 C      ebeam=1.0           ! Manually set the photon energy
 C
 C---   Beam/target definitions
@@ -52,6 +56,7 @@ C
          PIN(i,2)=0.
       ENDDO
       PIN(3,1)=ebeam
+      VZ=z
 C
       NTRA=0
 C
@@ -144,6 +149,7 @@ C
          WRITE(LUNWR(2)) IEVENT,IEVPROC
      +        ,(( ITPIN(j,i),j=1,2), AMIN(i),( PIN(j,i),j=1,3),i=1,2)
      +   ,NTRA,((ITPTRA(j,i),j=1,6),AMTRA(i),(PTRA(j,i),j=1,3),i=1,NTRA)
+     +   ,VZ
       ENDIF
 C
 C---   NTUPLE
@@ -157,5 +163,5 @@ C
 C      write(6,*) ebeam,IEVPROC,ibin,xstot,xssum,NTRA
 C
       END
-C
+
 
