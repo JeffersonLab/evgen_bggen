@@ -19,7 +19,11 @@ A) bremsbeam_ini.F: modify 1D histo h1Egamma to h2EgammaZ, add Z loop
 B) bg_eve.F: use 2-D histo 'h2EgammaZ' to throw z and Egamma
 C) bg_ctrl.inc: Add variable 'NHZ',  which means number of Z bins in 'h2EgammaZ'
 D) lowen_eve.F: Use histogram ID=9010 to determine bin index, before it is 9000
-E) bg_ntup_ini.F and bg_evec.inc: Add variable vz into the commom block and ntuple output. 
+E) bg_ntup_ini.F and bg_evec.inc: Add variable vz into the commom block and ntuple output.
+F) change hbook HLIMIT from 1.0E6 to 1.0E7 so it can take more records
+G) change lrec from 1024 to 4096 for "CALL HROPEN(lun,'HISOUT','bggen.his','NQE',lrec,iost)"
+H) change IQUEST(10) from 128000 to 12800000 so the output ntuple h9 can keep more records
+
 
 ----------------------------------------------------------------------------
 Version 1.0.0

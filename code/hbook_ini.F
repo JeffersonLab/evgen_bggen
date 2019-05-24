@@ -6,7 +6,7 @@ C
       IMPLICIT NONE
 C
       INTEGER mxpawc
-      PARAMETER (mxpawc=1000000)
+      PARAMETER (mxpawc=10000000)
       COMMON/PAWC/ HMEM(mxpawc)
       REAL HMEM
 C

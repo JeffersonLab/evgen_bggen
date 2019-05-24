@@ -1,25 +1,25 @@
 LIST
 C
 C ===    INPUT file for BGGEN
-C
-TRIG     10000         number of events to simulate
+C -- number of events to simulate
+TRIG     100000         
 C                       
 C --  output file formats, HDDM is not supported any more
 C --         HDDM  simple  ntuple
 WROUT    0     1       1   
 
 C -- number of events to print
-NPRIEV   10
+NPRIEV   3
 
 C -- energy range of photon in GeV, minimum 0.18
-EPHLIM   0.18 11.0       
+EPHLIM   0.18 11.0
 
 C -- random number seed, if RNDMSEQ=0 will use process ID and system time
 C -- to form a seed, otherwise use this given positive integer
 RNDMSEQ  0
 
 C --  electron beam energy (GeV) 
-EELEC    11.0
+EELEC    12.0
 
 C -- coherent peak energy (GeV)
 EPEAK    8.0

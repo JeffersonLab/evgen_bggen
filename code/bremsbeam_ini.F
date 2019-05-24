@@ -94,9 +94,9 @@ C the Z bin width should be less than 0.5cm or 0.001*density/X_0
       WRITE(6,*) 'zmn,zmx,nbz,dz=',zmn,zmx,nbz,dz
       
 C
-      CALL HBOOK2(ID   ,'dn/dE*sigma(E) Vs Z',nbz,zmn,zmx,nb,emn,emx,0.)
+      CALL HBOOK2(ID ,'dn/dE*sigma(E) Vs Z',nbz,zmn,zmx,nb,emn,emx,0.)
       CALL HBOOK2(ID+11,'dn/dE Vs Z',nbz,zmn,zmx,nb,emn,emx,0.)
-      CALL HBOOK1(ID+10,'total cross section in b',nb,emn,emx,0.)
+      CALL HBOOK1(ID+10,'total cross section in mb',nb,emn,emx,0.)
 C     Create the ntuple parameters are: ID, name, no of leaves, leave empty to save to memory or else give a file name, intial event buffer and array of leaf names
       CALL HBOOKN(1234,'Ntuple for photoproduction',6,' ',100000,CHTAGS)
 C
@@ -140,7 +140,7 @@ C
           N_omega = N_omega_EPA  + N_omega_BREM
           
           xlum=ecurr/1.6E-19*dz*density*0.6022 ! luminosity factor of neucleon (in [1/b] units) 
-          xsec=GPXSECT(e)*1.E-3 ! x-sec in b
+          xsec=GPXSECT(e)*1.E-3 ! x-sec turn form mb to b
           IF(ibrem.NE.0) THEN
             flx=N_omega*de/e ! dn_gamma(k) = n_gamma(x)dk/k
             vv=xsec*flx*xlum ! dsigma_ep(k) = sigma_gamma(k)*dn_gamma(k) and drate_ep = dsigma_ep(k)*xlum
@@ -160,7 +160,7 @@ C     Fill the ntuple
           ENDIF
 C          WRITE(6,*) 'z,e,vv,frate=',z,e,vv,frate
           CALL HF2(ID,z,e,vv) ! this is 'yield: dn/dE*sigma(E)'
-          if(i.EQ.1) CALL HF1(ID+10,e,xsec) ! this is xs in b  (Jixie: need to verify this unit)
+          if(j.EQ.1) CALL HF1(ID+10,e,xsec*1000) ! histo xs in mb
         ENDDO
       ENDDO
 C      CALL HPRINT(ID)
@@ -173,7 +173,7 @@ C
  1000   FORMAT(10X,'Beam:   ',F6.2,' uA e-, gamma in (',F6.2,', 'F6.2,'] GeV') 
         WRITE(6,1005) targth
  1005   FORMAT(10X,'Target: ',F6.2,' cm LH2')
-        WRITE(6,1010) frate/1000.
+        WRITE(6,1010) RATESEC/1000.
  1010   FORMAT(10X,'Interaction rate: ',F12.3,' kHz')
       ENDIF 
 C
@@ -181,6 +181,5 @@ C      CALL HCOPY(ID,ID+1,'    ')  ! a copy of the final histogram to be used fo
 C     All the histograms and ntuples in the memory will be saved to an hbook file
       Call hrput(0,'N_omega.hbk','N')
 C
-
  999  RETURN
       END

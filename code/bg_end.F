@@ -29,8 +29,8 @@ C
       ENDIF
 C
       lun=9
-      lrec=1024
-      CALL HROPEN(lun,'HISOUT','bggen.his','N',lrec,iost)
+      lrec=4096
+      CALL HROPEN(lun,'HISOUT','bggen.his','NQE',lrec,iost)
       CALL HROUT(0,icycle,'    ')
       CALL HREND('HISOUT')
       CLOSE(UNIT=lun)

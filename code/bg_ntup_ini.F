@@ -18,7 +18,7 @@ C
 C      lrec=2048
 C      IQUEST(10)=128000
       lrec=4096
-      IQUEST(10)=128000
+      IQUEST(10)=12800000
       CALL HROPEN(LUNWR(3),'bgkin','bggen.nt','NQE',lrec,iost)
       IF(iost.NE.0) THEN
          WRITE(6,*)'*** ERROR opening NTUPLE, iost=',iost
