@@ -23,7 +23,7 @@ E) bg_ntup_ini.F and bg_evec.inc: Add variable vz into the commom block and ntup
 F) change hbook HLIMIT from 1.0E6 to 1.0E7 so it can take more records
 G) change lrec from 1024 to 4096 for "CALL HROPEN(lun,'HISOUT','bggen.his','NQE',lrec,iost)"
 H) change IQUEST(10) from 128000 to 12800000 so the output ntuple h9 can keep more records
-
+I) fixed bug that SAID does not throw event. I have mistakes in filling histo h9010 before.
 
 ----------------------------------------------------------------------------
 Version 1.0.0
