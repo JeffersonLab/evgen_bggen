@@ -24,7 +24,10 @@ F) change hbook HLIMIT from 1.0E6 to 1.0E7 so it can take more records
 G) change lrec from 1024 to 4096 for "CALL HROPEN(lun,'HISOUT','bggen.his','NQE',lrec,iost)"
 H) change IQUEST(10) from 128000 to 12800000 so the output ntuple h9 can keep more records
 I) fixed bug that SAID does not throw event. I have mistakes in filling histo h9010 before.
+J) add this function: print out message "1000000 events simulated ..." every 1M events.
+K) add run/go_bggen.csh to make it easier to run this program.
 
+ 
 ----------------------------------------------------------------------------
 Version 1.0.0
 

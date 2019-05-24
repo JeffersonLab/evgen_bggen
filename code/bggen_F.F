@@ -53,6 +53,10 @@ C
             nproc(IEVPROC)=nproc(IEVPROC)+1
          ENDIF
 C
+
+         IF(mod(iev,1000000) .EQ. 0) WRITE(6,1970) iev
+ 1970    FORMAT(I9,' events simulated ... ')
+C 
       ENDDO
 C
       WRITE(6,1980) 
