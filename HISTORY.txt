@@ -8,6 +8,14 @@ In April 2018, Jixie Zhang made modifications with Rakitha's version and created
 version 1.0.0 and uploaded it to github. All the modifications are listed below.
 For detail changes, please see file 'diff.txt'.
 
+
+----------------------------------------------------------------------------
+Version 1.1.1  20190716
+1. Fixed bug in number of Z bin calculation. In previous version, if the given
+    target thickness is very thin (< 0.001 rad.len.), the number of Z bin will be zero.
+    This bug will cause the program crash since it trys to create 2-D histogram with zero
+    bin number. This bug is now fixed in file brembeam_ini.F.
+    
 ----------------------------------------------------------------------------
 Version 1.1.0  20190502
 1. Add Z dependence. For each Z bin, the window plus the target matetial in front of

@@ -77,10 +77,11 @@ C
       emn=ELIM(1)
       emx=ELIM(2)
       de=MIN(0.005,emx-emn) !dk, bin width of photon energy, try to set it as 5 MeV, need to recheck it later 
-      nb=INT((emx-emn)/de+0.001) !add 0.001 to get rid of round off effect
+      nb=CEILING((emx-emn)/de-0.001) !add 0.001 to get rid of round off effect
       de=(emx-emn)/nb ! recheck dk, to get more resolution in ntupes I can change this to 0.0005
       dx=de/E0
       NHBEA=nb
+      WRITE(6,*) 'emn,emx,nbe,de=',emn,emx,nb,de
 
 C determind number of Z bins. User provided rad-length of target 'X_0/density' (in unit of cm)
 C the Z bin width should be less than 0.5cm or 0.001*density/X_0
@@ -88,7 +89,8 @@ C the Z bin width should be less than 0.5cm or 0.001*density/X_0
       zmn=-targth/2.0
       zmx=targth/2.0
       dz=MIN(0.5,0.001*(X_0/density))  !dz, try to set it to 5mm or 0.001*X_0/density, which is smaller
-      nbz=INT((zmx-zmn)/dz+0.001)
+      nbz=CEILING((zmx-zmn)/dz-0.001)
+      if(nbz.lt.1) nbz=1  !in case the target is very thin, nbz could be zero
       dz=(zmx-zmn)/nbz ! reset dz based on number of z bins
       NHZ=nbz
       WRITE(6,*) 'zmn,zmx,nbz,dz=',zmn,zmx,nbz,dz
