@@ -193,7 +193,7 @@ int main(Int_t argc,Char_t* argv[]) {
   gStyle->SetOptFit();
   //TApplication theApp("App",&argc,argv);
   set_plot_style();
-  TString halld_rootfilename="/home/rakithab/Simulation_Analysis/Generators/HallD/ElectroProduction/bggen_output_1M_*.root";
+  TString halld_rootfilename="bggen.root";
   //parse input arguments
   //TString str_arg(argv[1]);
   //std::cout <<argv[1]<<" "<< str_arg << std::endl;
