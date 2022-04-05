@@ -33,7 +33,7 @@ Note that CERN & ROOT must be installed before compilation.
     bggen.Linux_x86_64.exe will be created.
 
 ## To compile use CMake on jlab ifarm: (need more instruction to configure env)
-
+    source setup
     mkdir build && cd build
     cmake ../code
     make
