@@ -1,0 +1,62 @@
+setenv COMPILER_BIT 64
+
+#source /u/home/jixie/clas/builds/release-4-15/packages/cms/jlab.cshrc release-4-15
+
+if !($?LD_LIBRARY_PATH) then
+  setenv LD_LIBRARY_PATH  /usr/lib64:/lib64:/usr/local/lib64
+endif
+
+if !($?OS_NAME) then
+  set OSVERSION = (`grep release /etc/redhat-release | awk -F'release ' '{print $2}'|awk -F'.' '{print $1}'`)
+  set MyOS = (`uname -s`)
+  set ARCH = (`arch`)
+  if ( $ARCH == x86_64 ) then
+    setenv OS_NAME ${MyOS}64RH${OSVERSION}
+  else
+    setenv OS_NAME ${MyOS}RH${OSVERSION}
+  endif
+endif
+
+#VDI can not connect to work disk
+set IsVDI = (`hostname -s | grep VDI`)
+#########for 64 bit compiler#########################
+
+if ( !($?CERN_ROOT) && -d /apps/cernlib/x86_64_rhel7) then
+    setenv CERN /apps/cernlib/x86_64_rhel7
+    setenv CERN_LEVEL 2005
+    setenv CERN_ROOT $CERN/$CERN_LEVEL
+    setenv CERN_INCLUDE /usr/include/cernlib/$CERN_LEVEL
+    setenv PATH ${CERN_ROOT}/bin:${PATH}
+    if !($?LD_LIBRARY_PATH) then
+	setenv LD_LIBRARY_PATH ${CERN_ROOT}/lib:/usr/lib64:/usr/local/lib64
+    else
+	setenv LD_LIBRARY_PATH ${CERN_ROOT}/lib:${LD_LIBRARY_PATH}
+    endif
+endif
+
+if ( "X$OS_NAME" == "XLinux64RH6" ) then	
+   #source ~/geant4_9.6.4_centos6.5.csh
+else if ( "X$OS_NAME" == "XLinux64RH7" ) then
+   #source ~/geant4_9.6.4_centos7.2.csh
+else
+   #source ~/geant4_9.4_centos5.3.csh
+endif
+
+
+if !($?ROOTSYS) then
+   setenv ROOTSYS /apps/root/PRO/root 
+#   setenv ROOTSYS /apps/root/6.02.00/root/
+   setenv ROOTLIB $ROOTSYS/lib
+   setenv PATH ${ROOTSYS}/bin:${PATH}
+   setenv LD_LIBRARY_PATH ${ROOTSYS}/lib:${LD_LIBRARY_PATH}
+endif
+
+
+
+#setenv PATH ~/work/SCRIPT:${TOP_DIR}/bin/${OS_NAME}:${PATH}
+#setenv LD_LIBRARY_PATH ${TOP_DIR}/lib/${OS_NAME}:${LD_LIBRARY_PATH}:/usr/lib
+
+#install decoder
+setenv CODADIR /work/halla/solid/jixie/decode/coda/Linux-x86_64
+setenv PATH ${CODADIR}/bin:${PATH}
+setenv LD_LIBRARY_PATH ${CODADIR}/lib:${LD_LIBRARY_PATH}
